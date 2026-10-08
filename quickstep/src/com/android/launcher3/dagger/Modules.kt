@@ -231,7 +231,15 @@ object StaticObjectModule {
     @JvmStatic
     @LauncherAppSingleton
     @Named(WINDOW_BLUR_STATE)
-    fun provideWindowBlurState(lifecycle: DaggerSingletonTracker): ListenableRef<Boolean> {
+    fun provideWindowBlurState(
+        @ApplicationContext context: Context,
+        lifecycle: DaggerSingletonTracker
+    ): ListenableRef<Boolean> {
+        val blurEnabled = context.resources
+            .getBoolean(com.android.launcher3.R.bool.config_enableLauncherBlur)
+        if (!blurEnabled) {
+            return MutableListenableRef(false).asListenable()
+        }
         val blurListeners = CrossWindowBlurListeners.getInstance()
         val value = MutableListenableRef(blurListeners.isCrossWindowBlurEnabled)
 

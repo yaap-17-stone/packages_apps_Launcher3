@@ -280,7 +280,7 @@ public class BaseDepthControllerImpl<
                 .setOpaque(isSurfaceOpaque);
         // Set early wake-up flags when we know we're executing an expensive operation, this way
         // SurfaceFlinger will adjust its internal offsets to avoid jank.
-        boolean wantsEarlyWakeUp = blurAmount > 0 && blurAmount < 1;
+        boolean wantsEarlyWakeUp = shouldBlur() && blurAmount > 0 && blurAmount < 1;
         if (wantsEarlyWakeUp && !mInEarlyWakeUp) {
             setEarlyWakeup(surfaceTransaction.getTransaction(), true);
         } else if (!wantsEarlyWakeUp && mInEarlyWakeUp) {
